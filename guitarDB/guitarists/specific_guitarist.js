@@ -878,3 +878,37 @@ let guitarists_object = {
     ]
 };
 
+let count = 0;
+let getData = () => {
+    // formatted_names.map(guitarist => {
+        axios.get(`https://equipboard.com/pros/jack-white`)
+            .then((response) => {
+                if (response.status === 200) {
+                    const html = response.data;
+
+                    const $ = cheerio.load(html);
+
+
+                    // This will select all of the names of the guitarists
+                    let guitarist_description = $('.eb-collection-header__desc').text();
+                    if (guitarist_description === '') {
+                        guitarist_description = null;
+                    }
+
+                    if (guitarist_description.replace(/^[\s]+/g, '') !== '') guitarists_object.data[count].description = (guitarist_description.replace(/^[\s]+/g, ''));
+                    console.log(guitarist_description);
+                    count++;
+                }
+
+            })
+            .catch(error => {
+                console.log(error);
+            }).then((response) => {
+                console.log(guitarists_object);
+        });
+    // });
+};
+
+getData();
+
+

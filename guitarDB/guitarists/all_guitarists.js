@@ -73,45 +73,5 @@ let finished_images = [];
         })
 };
 
-
 getData();
-
-//     request('https://equipboard.com/role/guitarists', (err, res, body) => {
-//
-//         if (err) return console.error(err);
-//
-//         // body refers to the body of html content that we got from the requested URL
-//         let $ = cheerio.load(body);
-//
-//         // This will select all of the names of the guitarists
-//         let guitarists_name = $('h2').text();
-//         let guitarists = guitarists_name.split('\n');
-//
-//         // This will replace any empty part of the array
-//         // It will also format it to remove any leading white space
-//         guitarists.map((guitarist) => {
-//             if(guitarist.replace(/^[ \t]+/g, '') !== '') return finished_names.push(guitarist.replace(/^[ \t]+/g, ''));
-//         });
-//
-//         // This is used to get the specific info for each guitarist.
-//         // Their info page uses a lower case and dashed pattern in the URL
-//         formatted_names = finished_names.map((name) => {
-//             return (name.toLowerCase().replace(/\s|'/g, '-').replace(/\./g, ''));
-//         });
-//
-//         // This will get all of the image urls for the guitarists
-//         $(".span2 img").map(function(i, image) {
-//             finished_images.push(url.resolve('https://equipboard.com/role/guitarists', $(image).attr('data-original')));
-//         });
-//     });
-
-//
-// let run = () => {
-//     toJson();
-// };
-//
-// setTimeout(() => {
-//     run();
-// }, 2000);
-
 
