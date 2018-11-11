@@ -1,2 +1,2 @@
 # webscraping
-Projects made to populate databases with actual data
+Node webscraping with Cheerio for various projects.
