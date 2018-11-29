@@ -14,7 +14,7 @@ let finished_images = [];
 
 // This is where we scrape the names and image paths of all guitarists
  getData = async () => {
-    axios.get('https://equipboard.com/role/guitarists')
+    await axios('https://equipboard.com/role/guitarists')
         .then((response) => {
             if (response.status === 200) {
                 const html = response.data;
@@ -53,11 +53,11 @@ let finished_images = [];
 
             // Write the object to a json object and output it to the correct folder
             let json = JSON.stringify(guitarist_object);
-            fs.writeFile('guitarists/output/guitarists_name_output.json', json, 'utf8', function(err) {
+            fs.writeFile('guitarists/output/guitarists_name_img.json', json, 'utf8', function(err) {
                 if (err) {
                     return console.log(err);
                 }
-                console.log("The file was saved!");
+                console.log("Guitarist names and images saved!");
             });
 
             let json1 = JSON.stringify(formatted_names);

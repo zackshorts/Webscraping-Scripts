@@ -15,7 +15,7 @@ let formatted_names = [
     'kurt-cobain',
     'jimmy-page',
     'david-gilmour',
-    'alex-turner',
+    'alex-turner-arctic-monkeys',
     'josh-homme',
     'matthew-bellamy',
     'billie-joe-armstrong',
@@ -47,7 +47,7 @@ let formatted_names = [
     'zakk-wylde',
     'michael-clifford',
     'john-lennon',
-    'jonny-buckland',
+    'jonny-buckland-coldplay',
     'jamie-cook',
     'billy-gibbons',
     'carlos-santana',
@@ -56,7 +56,7 @@ let formatted_names = [
     'joe-bonamassa',
     'chris-wolstenholme',
     'jeff-beck',
-    'nick-valensi',
+    'nick-valensi-the-strokes',
     'synyster-gates',
     'trent-reznor',
     'tony-iommi',
@@ -67,7 +67,7 @@ let formatted_names = [
     'jerry-cantrell',
     'thomas-delonge',
     'brian-may',
-    'caleb-followill',
+    'caleb-followill-kings-of-leon',
     'dave-mustaine',
     'chris-martin',
     'mark-knopfler',
@@ -96,7 +96,7 @@ let formatted_names = [
     'albert-hammond-jr',
     'brendon-urie',
     'thurston-moore',
-    'mike-einziger',
+    'mike-einziger-incubus',
     'beck',
     'alex-lifeson',
     'ed-o-brien',
@@ -879,34 +879,37 @@ let guitarists_object = {
 };
 
 let count = 0;
-let getData = () => {
-    // formatted_names.map(guitarist => {
-        axios.get(`https://equipboard.com/pros/jack-white`)
-            .then((response) => {
-                if (response.status === 200) {
-                    const html = response.data;
+async function getData() {
 
-                    const $ = cheerio.load(html);
+    for (let guitarist of formatted_names) {
+        try{
+            let data = await axios(`https://equipboard.com/pros/${guitarist}`);
+            if (data.status === 200) {
+                const html = data.data;
+
+                const $ = cheerio.load(html);
 
 
-                    // This will select all of the names of the guitarists
-                    let guitarist_description = $('.eb-collection-header__desc').text();
-                    if (guitarist_description === '') {
-                        guitarist_description = null;
-                    }
-
-                    let formatted_description = guitarist_description.replace(/^[\s]+/g, '');
-
-                    if (formatted_description !== '') guitarists_object.data[count].description = formatted_description;
-                    console.log(guitarist_description);
-                    count++;
+                // This will select all of the names of the guitarists
+                let guitarist_description = $('.eb-collection-header__desc').text();
+                if (guitarist_description === '') {
+                    guitarist_description = null;
                 }
+                let formatted_description = guitarist_description.replace(/^[\s]+/g, '');
 
-            })
-            .catch(error => {
-            }).then((response) => {
-        });
-    // });
+                if (formatted_description !== '' && formatted_description !== null) guitarists_object.data[count].description = formatted_description;
+                else guitarists_object.data[count].description = 'No description found...';
+                count++;
+            }
+        }
+        catch{
+            count++;
+            console.log(`Problem with -- ${guitarist} --`)
+        }
+    }
+
+    console.log(guitarists_object);
+
 };
 
 getData();
