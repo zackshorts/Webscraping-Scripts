@@ -300,6 +300,9 @@ let guitarists_object = {
     }]
 };
 
+let guitars = [];
+let finished_images = [];
+
 let count = 0;
 async function addDescription() {
 
@@ -322,6 +325,33 @@ async function addDescription() {
                 if (formatted_description !== '' && formatted_description !== null) guitarists_object.data[count].description = formatted_description;
                 else guitarists_object.data[count].description = 'No description found...';
                 count++;
+            }
+
+            let guitarData = await axios(`https://equipboard.com/pros/${guitarist}/#guitars`);
+            if (guitarData.status === 200) {
+                const html = guitarData.data;
+                const $ = cheerio.load(html);
+
+                // This will select all of the names of the guitars
+                let guitars_name_array = $('.eb-sections').children();
+
+                for (let i = 0; i < guitars_name_array.length; i++) {
+                    guitars.push(guitars_name_array[i].attribs.title)
+                }
+
+
+                console.log(guitars);
+                // // This will replace any empty part of the array
+                // // It will also format it to remove any leading white space
+                // guitars.map((guitar) => {
+                //     if (guitar.replace(/^[ \t]+/g, '') !== '') return finished_names.push(guitar.replace(/^[ \t]+/g, ''));
+                // });
+
+
+                // This will get all of the image urls for the guitars
+                $(".eb-img-lazy").map(function (i, image) {
+                    finished_images.push(url.resolve(`https://equipboard.com/pros/${guitarist}/#guitars`, $(image).attr('data-original')));
+                });
             }
         }
         catch{
